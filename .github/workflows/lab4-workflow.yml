@@ -9,3 +9,27 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+
+
+
+jobs:
+  npm-package:
+    permissions:
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com/'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish
